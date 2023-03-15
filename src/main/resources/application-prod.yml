@@ -1,0 +1,17 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: jdbc:mysql://sql7.freesqldatabase.com:3306/sql7605145
+    username: sql7605145
+    password: dMSwe2IrT5
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 10
+        format_sql: true
