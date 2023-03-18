@@ -1,25 +1,17 @@
 package com.product.productapp.dto.product;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.validation.constraints.NotBlank;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateProductRequestDto {
+@Builder
+public class ProductResponseDto {
 
-    @NotBlank
+    private Long id;
     private String name;
-
-    private String description;
-
-    @NotBlank
     private Double price;
-
-    private String brand;
-
-    private String color;
 }

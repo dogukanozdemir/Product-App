@@ -1,8 +1,8 @@
 package com.product.productapp.service;
 
 import com.product.productapp.authentication.AuthenticationUtil;
-import com.product.productapp.dto.product.CreateProductRequestDto;
-import com.product.productapp.dto.product.CreateProductResponseDto;
+import com.product.productapp.dto.product.ProductRequestDto;
+import com.product.productapp.dto.product.ProductResponseDto;
 import com.product.productapp.dto.product.ProductDto;
 import com.product.productapp.entity.Client;
 import com.product.productapp.entity.Product;
@@ -28,9 +28,12 @@ public class ProductService {
 
     private final AuthenticationUtil authenticationUtil;
 
-    public CreateProductResponseDto createProduct(CreateProductRequestDto requestDto){
-
+    public ProductResponseDto createProduct(ProductRequestDto requestDto){
         Client currentClient = authenticationUtil.getCurrentClient();
+        productRepository.findByNameAndClientId(requestDto.getName(), currentClient.getId())
+                .ifPresent(product -> {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You already own a product called " + requestDto.getName());
+                });
 
         Product product = Product.builder()
                 .name(requestDto.getName())
@@ -43,13 +46,9 @@ public class ProductService {
                 .build();
         productRepository.save(product);
 
-        return CreateProductResponseDto.builder()
-                .id(product.getId())
-                .name(product.getName())
-                .price(product.getPrice())
-                .build();
-
+        return new ProductResponseDto(product.getId(), product.getName(), product.getPrice());
     }
+
 
     public String deleteProductById(Long id) {
         Client currentClient = authenticationUtil.getCurrentClient();
@@ -80,7 +79,7 @@ public class ProductService {
                 ).toList();
     }
 
-    public ProductDto updateProductById(CreateProductRequestDto requestDto, Long id) {
+    public ProductDto updateProductById(ProductRequestDto requestDto, Long id) {
         Client client = authenticationUtil.getCurrentClient();
         Product product = productRepository.findByIdAndAndClientId(id, client.getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("Product with id %s was not found", id)));

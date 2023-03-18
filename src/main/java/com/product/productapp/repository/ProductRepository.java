@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface ProductRepository extends CrudRepository<Product,Long> {
 
     Optional<Product> findByIdAndAndClientId(Long id, Long clientId);
+
+    Optional<Product> findByNameAndClientId(String name, Long clientId);
 }

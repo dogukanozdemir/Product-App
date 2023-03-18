@@ -1,4 +1,4 @@
-package com.product.productapp.dto.product;
+package com.product.productapp.dto.client;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CreateProductResponseDto {
+public class ClientRegisterResponseDto {
 
-    private Long id;
-    private String name;
-    private Double price;
+    private String username;
+    private String hashedPassword;
+
 }

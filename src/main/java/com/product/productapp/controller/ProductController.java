@@ -1,8 +1,7 @@
 package com.product.productapp.controller;
 
-import com.product.productapp.authentication.AuthenticationUtil;
-import com.product.productapp.dto.product.CreateProductRequestDto;
-import com.product.productapp.dto.product.CreateProductResponseDto;
+import com.product.productapp.dto.product.ProductRequestDto;
+import com.product.productapp.dto.product.ProductResponseDto;
 import com.product.productapp.dto.product.ProductDto;
 import com.product.productapp.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +22,8 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping(path ="/product")
-    public ResponseEntity<CreateProductResponseDto> createProduct(@Validated @RequestBody CreateProductRequestDto createProductRequestDto){
-        return ResponseEntity.status(HttpStatus.CREATED).body(productService.createProduct(createProductRequestDto));
+    public ResponseEntity<ProductResponseDto> createProduct(@Validated @RequestBody ProductRequestDto productRequestDto){
+        return ResponseEntity.status(HttpStatus.CREATED).body(productService.createProduct(productRequestDto));
     }
 
     @GetMapping(path = "/products")
@@ -38,8 +37,8 @@ public class ProductController {
     }
 
     @PutMapping(path = "/product/{id}")
-    public ResponseEntity<ProductDto> updateProduct(@Validated @RequestBody CreateProductRequestDto createProductRequestDto, @PathVariable Long id){
-        return ResponseEntity.ok(productService.updateProductById(createProductRequestDto,id));
+    public ResponseEntity<ProductDto> updateProduct(@Validated @RequestBody ProductRequestDto productRequestDto, @PathVariable Long id){
+        return ResponseEntity.ok(productService.updateProductById(productRequestDto,id));
     }
 
 }

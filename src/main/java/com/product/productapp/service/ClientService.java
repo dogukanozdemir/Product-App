@@ -1,10 +1,10 @@
 package com.product.productapp.service;
 
 import com.product.productapp.authentication.jwt.JwtProvider;
-import com.product.productapp.dto.client.CreateClientRequestDto;
-import com.product.productapp.dto.client.CreateClientResponseDto;
-import com.product.productapp.dto.client.LoginClientRequestDto;
-import com.product.productapp.dto.client.LoginClientResponseDto;
+import com.product.productapp.dto.client.ClientRegisterRequestDto;
+import com.product.productapp.dto.client.ClientRegisterResponseDto;
+import com.product.productapp.dto.client.ClientLoginRequestDto;
+import com.product.productapp.dto.client.ClientLoginResponseDto;
 import com.product.productapp.entity.Client;
 import com.product.productapp.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class ClientService {
     private final PasswordEncoder passwordEncoder;
     private final ClientRepository clientRepository;
 
-    public CreateClientResponseDto registerClient(CreateClientRequestDto requestDto) {
+    public ClientRegisterResponseDto registerClient(ClientRegisterRequestDto requestDto) {
         if (clientRepository.findByUsername(requestDto.getUsername()).isPresent()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     String.format("User with '%s' username already exists", requestDto.getUsername()));
@@ -38,19 +38,19 @@ public class ClientService {
                 .build();
         clientRepository.save(client);
 
-        return CreateClientResponseDto.builder()
+        return ClientRegisterResponseDto.builder()
                 .username(client.getUsername())
                 .hashedPassword(client.getPassword())
                 .build();
     }
 
-    public LoginClientResponseDto loginClient(LoginClientRequestDto requestDto) {
+    public ClientLoginResponseDto loginClient(ClientLoginRequestDto requestDto) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(requestDto.getUsername(), requestDto.getPassword()));
 
         if (authentication.isAuthenticated()) {
             String jwtToken = jwtProvider.generateToken(requestDto.getUsername());
-            return LoginClientResponseDto.builder()
+            return ClientLoginResponseDto.builder()
                     .username(requestDto.getUsername())
                     .jwtToken(jwtToken)
                     .build();
