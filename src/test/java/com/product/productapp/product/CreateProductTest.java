@@ -24,7 +24,7 @@ import static org.mockito.Mockito.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @MockitoSettings(strictness = Strictness.LENIENT)
-public class CreateProductTest {
+class CreateProductTest {
 
     @InjectMocks
     private ProductService productService;
@@ -35,36 +35,41 @@ public class CreateProductTest {
     @Mock
     private AuthenticationUtil authenticationUtil;
 
-    @Test
-    void when_product_create_successful_then_return_responseDto() {
-        Client client = Client.builder()
+    private Client client;
+    private ProductRequestDto productRequestDto;
+    @BeforeEach()
+    void setup(){
+        client = Client.builder()
                 .id(1L)
                 .username("testClient")
                 .build();
         when(authenticationUtil.getCurrentClient()).thenReturn(client);
 
-
-        ProductRequestDto requestDto = ProductRequestDto.builder()
+        productRequestDto = ProductRequestDto.builder()
                 .name("testProduct")
                 .description("testDescription")
                 .price(10.0)
                 .brand("testBrand")
                 .color("testColor")
                 .build();
+    }
+
+    @Test
+    void when_product_create_successful_then_return_responseDto() {
         when(productRepository.findByNameAndClientId(any(), any())).thenReturn(Optional.empty());
 
         Product product = Product.builder()
-                .name(requestDto.getName())
-                .description(requestDto.getDescription())
-                .price(requestDto.getPrice())
-                .brand(requestDto.getBrand())
-                .color(requestDto.getColor())
+                .name(productRequestDto.getName())
+                .description(productRequestDto.getDescription())
+                .price(productRequestDto.getPrice())
+                .brand(productRequestDto.getBrand())
+                .color(productRequestDto.getColor())
                 .clientId(client.getId())
                 .build();
 
         when(productRepository.save(any())).thenReturn(product);
 
-        ProductResponseDto responseDto = productService.createProduct(requestDto);
+        ProductResponseDto responseDto = productService.createProduct(productRequestDto);
 
         ProductResponseDto expectedResponseDto = ProductResponseDto.builder()
                 .id(product.getId())
@@ -77,25 +82,10 @@ public class CreateProductTest {
 
     @Test
     void when_product_already_exists_then_throw_ResponseStatusException() {
-        // Mock authentication
-        Client client = Client.builder()
-                .id(1L)
-                .username("testClient")
-                .build();
-        when(authenticationUtil.getCurrentClient()).thenReturn(client);
-
-        ProductRequestDto requestDto = ProductRequestDto.builder()
-                .name("testProduct")
-                .description("testDescription")
-                .price(10.0)
-                .brand("testBrand")
-                .color("testColor")
-                .build();
-
-        when(productRepository.findByNameAndClientId(requestDto.getName(), client.getId())).
+        when(productRepository.findByNameAndClientId(productRequestDto.getName(), client.getId())).
                 thenReturn(Optional.of(Product.builder().build()));
 
-        assertThrows(ResponseStatusException.class, () -> productService.createProduct(requestDto), "You already own a product called testProduct");
+        assertThrows(ResponseStatusException.class, () -> productService.createProduct(productRequestDto), "You already own a product called testProduct");
     }
 }
 

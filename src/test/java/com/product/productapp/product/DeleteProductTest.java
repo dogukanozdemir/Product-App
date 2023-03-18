@@ -5,6 +5,7 @@ import com.product.productapp.entity.Client;
 import com.product.productapp.entity.Product;
 import com.product.productapp.repository.ProductRepository;
 import com.product.productapp.service.ProductService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -32,12 +33,18 @@ class DeleteProductTest {
     @Mock
     private ProductRepository productRepository;
 
-    @Test
-    void when_product_deletion_success_then_return_success_string() {
-        Client client = Client.builder()
+    private Client client;
+    @BeforeEach()
+    void setup(){
+        client = Client.builder()
                 .id(1L)
                 .username("dogukan")
                 .build();
+    }
+
+    @Test
+    void when_product_deletion_success_then_return_success_string() {
+
 
         Product product = Product.builder()
                 .id(2L)
@@ -55,11 +62,6 @@ class DeleteProductTest {
 
     @Test
     void when_product_not_found_then_throw_ResponseStatusException() {
-        Client client = Client.builder()
-                .id(1L)
-                .username("dogukan")
-                .build();
-
         when(authenticationUtil.getCurrentClient()).thenReturn(client);
         when(productRepository.findByIdAndAndClientId(anyLong(), anyLong())).thenReturn(Optional.empty());
 

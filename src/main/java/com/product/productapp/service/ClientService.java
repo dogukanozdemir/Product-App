@@ -29,7 +29,7 @@ public class ClientService {
     public ClientRegisterResponseDto registerClient(ClientRegisterRequestDto requestDto) {
         if (clientRepository.findByUsername(requestDto.getUsername()).isPresent()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    String.format("User with '%s' username already exists", requestDto.getUsername()));
+                    String.format("Client with '%s' username already exists", requestDto.getUsername()));
         }
 
         Client client = Client.builder()

@@ -7,6 +7,7 @@ import com.product.productapp.entity.Client;
 import com.product.productapp.entity.Product;
 import com.product.productapp.repository.ProductRepository;
 import com.product.productapp.service.ProductService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -31,17 +32,30 @@ class UpdateProductTest {
     @Mock
     private AuthenticationUtil authenticationUtil;
 
+    private Client client;
+    private ProductRequestDto updatedProductRequestDto;
 
-    @Test
-    void when_product_is_found_then_update_product() {
-
-        Client client = Client.builder()
+    @BeforeEach
+    void setup(){
+        client = Client.builder()
                 .id(1L)
                 .username("name")
                 .build();
         when(authenticationUtil.getCurrentClient()).thenReturn(client);
 
-        // mock data
+        updatedProductRequestDto = ProductRequestDto.builder()
+                .name("Updated Product")
+                .description("updated description")
+                .brand("Brand 2")
+                .price(20.00)
+                .color("Blue")
+                .build();
+    }
+
+
+    @Test
+    void when_product_is_found_then_update_product() {
+
         Product existingProduct = Product.builder()
                 .id(1L)
                 .name("product")
@@ -51,51 +65,29 @@ class UpdateProductTest {
                 .color("Red")
                 .clientId(client.getId())
                 .build();
-        ProductRequestDto requestDto = ProductRequestDto.builder()
-                .name("Updated Product")
-                .description("updated description")
-                .brand("Brand 2")
-                .price(20.00)
-                .color("Blue")
-                .build();
 
         when(productRepository.findByIdAndAndClientId(anyLong(), anyLong())).thenReturn(Optional.of(existingProduct));
         when(productRepository.save(existingProduct)).thenReturn(existingProduct);
 
         ProductDto expectedProduct = ProductDto.builder()
                 .id(existingProduct.getId())
-                .name(requestDto.getName())
-                .description(requestDto.getDescription())
-                .brand(requestDto.getBrand())
-                .price(requestDto.getPrice())
-                .color(requestDto.getColor())
+                .name(updatedProductRequestDto.getName())
+                .description(updatedProductRequestDto.getDescription())
+                .brand(updatedProductRequestDto.getBrand())
+                .price(updatedProductRequestDto.getPrice())
+                .color(updatedProductRequestDto.getColor())
                 .build();
 
-        ProductDto actualProduct = productService.updateProductById(requestDto, existingProduct.getId());
+        ProductDto actualProduct = productService.updateProductById(updatedProductRequestDto, existingProduct.getId());
         assertThat(expectedProduct).isEqualTo(actualProduct);
     }
 
     @Test
     void when_product_not_found_then_throw_ResponseStatusException() {
-        // mock authenticationUtil
-        Client client = Client.builder()
-                .id(1L)
-                .username("client")
-                .build();
-        when(authenticationUtil.getCurrentClient()).thenReturn(client);
-
-
-        ProductRequestDto requestDto = ProductRequestDto.builder()
-                .name("Updated Product")
-                .description("updated description")
-                .brand("Brand 2")
-                .price(20.00)
-                .color("Blue")
-                .build();
 
         when(productRepository.findByIdAndAndClientId(anyLong(), anyLong())).thenReturn(Optional.empty());
         assertThrows(ResponseStatusException.class,
-                () -> productService.updateProductById(requestDto,2L),
+                () -> productService.updateProductById(updatedProductRequestDto,2L),
                 "Product with id 2 was not found");
     }
 }
