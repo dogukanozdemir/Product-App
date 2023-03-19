@@ -1,6 +1,7 @@
 package com.product.productapp.service;
 
 import com.product.productapp.authentication.AuthenticationUtil;
+import com.product.productapp.dto.ResponseDto;
 import com.product.productapp.dto.product.ProductRequestDto;
 import com.product.productapp.dto.product.ProductResponseDto;
 import com.product.productapp.entity.Client;
@@ -28,8 +29,6 @@ public class ProductService {
 
     private final AuthenticationUtil authenticationUtil;
 
-    private final Clock clock = Clock.systemUTC();
-
     public ProductResponseDto createProduct(ProductRequestDto requestDto){
         Client currentClient = authenticationUtil.getCurrentClient();
         productRepository.findByNameAndClientId(requestDto.getName(), currentClient.getId())
@@ -52,13 +51,14 @@ public class ProductService {
                 .color(product.getColor())
                 .description(product.getDescription())
                 .name(product.getName())
+                .brand(product.getBrand())
                 .price(product.getPrice())
                 .clientId(product.getClientId())
                 .build();
     }
 
 
-    public String deleteProductById(Long id) {
+    public ResponseDto deleteProductById(Long id) {
         Client currentClient = authenticationUtil.getCurrentClient();
 
         Product product = productRepository.findByIdAndAndClientId(id, currentClient.getId())
@@ -67,7 +67,9 @@ public class ProductService {
                                 currentClient.getUsername(), id)));
 
         productRepository.delete(product);
-        return String.format("Product with id %s has been deleted successfully", id);
+        return ResponseDto.builder()
+                .message(String.format("Product with id %s has been deleted", id))
+                .build();
     }
 
 

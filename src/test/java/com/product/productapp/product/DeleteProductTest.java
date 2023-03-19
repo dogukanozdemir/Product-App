@@ -1,6 +1,7 @@
 package com.product.productapp.product;
 
 import com.product.productapp.authentication.AuthenticationUtil;
+import com.product.productapp.dto.ResponseDto;
 import com.product.productapp.entity.Client;
 import com.product.productapp.entity.Product;
 import com.product.productapp.repository.ProductRepository;
@@ -56,8 +57,8 @@ class DeleteProductTest {
         when(authenticationUtil.getCurrentClient()).thenReturn(client);
         when(productRepository.findByIdAndAndClientId(anyLong(), anyLong())).thenReturn(Optional.of(product));
 
-        String result = productService.deleteProductById(2L);
-        assertThat(result).isEqualTo("Product with id 2 has been deleted successfully");
+        ResponseDto result = productService.deleteProductById(2L);
+        assertThat(result).isEqualTo(ResponseDto.builder().message("Product with id 2 has been deleted").build());
     }
 
     @Test

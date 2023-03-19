@@ -80,6 +80,7 @@ class CreateProductTest {
                 .description(product.getDescription())
                 .color(product.getColor())
                 .price(product.getPrice())
+                .brand(product.getBrand())
                 .clientId(product.getClientId())
                 .build();
 

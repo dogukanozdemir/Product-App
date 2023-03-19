@@ -1,6 +1,7 @@
 package com.product.productapp.config;
 
 import com.product.productapp.authentication.jwt.JwtFilter;
+import com.product.productapp.config.exception.GlobalExceptionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,8 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import java.time.Clock;
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -29,6 +28,13 @@ public class WebSecurityConfig {
     @Autowired
     private JwtFilter jwtFilter;
 
+
+    private final GlobalExceptionHandler exceptionHandler;
+
+    public WebSecurityConfig(GlobalExceptionHandler exceptionHandler) {
+        this.exceptionHandler = exceptionHandler;
+    }
+
     @Bean
     public UserDetailsService userDetailsService() {
         return new ClientDetailsService();
@@ -36,6 +42,7 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
         return http.csrf().disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/api/auth/**").permitAll()

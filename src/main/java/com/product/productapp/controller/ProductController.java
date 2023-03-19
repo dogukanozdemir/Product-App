@@ -1,5 +1,6 @@
 package com.product.productapp.controller;
 
+import com.product.productapp.dto.ResponseDto;
 import com.product.productapp.dto.product.ProductRequestDto;
 import com.product.productapp.dto.product.ProductResponseDto;
 import com.product.productapp.service.ProductService;
@@ -31,7 +32,7 @@ public class ProductController {
     }
 
     @DeleteMapping(path = "/product/{id}")
-    public ResponseEntity<String> deleteProduct(@PathVariable Long id){
+    public ResponseEntity<ResponseDto> deleteProduct(@PathVariable Long id){
         return ResponseEntity.ok().body(productService.deleteProductById(id));
     }
 
