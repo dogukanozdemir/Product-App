@@ -14,7 +14,7 @@ This document outlines the API endpoints, HTTP verbs, headers, responses, and te
 
 In order to use the API, clients must authenticate themselves with valid credentials. There are two authentication endpoints available: api/auth/register and api/auth/login.
 
-Clients can register themselves by sending a POST request to the `/api/auth/register` endpoint with their username and password. After a successful registration, clients must then send a POST request to the `/api/auth/login` endpoint with their registered credentials to receive a JWT token, which must be included in the Authorization header of all subsequent requests. If a client attempts to access a protected endpoint without a valid JWT token, they will receive a 401 Unauthorized error response.
+Clients can register themselves by sending a POST request to the `/api/auth/register` endpoint with their username and password. After a successful registration, clients must then send a POST request to the `/api/auth/login` endpoint with their registered credentials to receive a JWT token, which must be included in the Authorization header of all subsequent requests. If a client attempts to access a protected endpoint without a valid JWT token, they will receive a 403 Forbidden error response.
 
 ## Register
 To register a new client, use the following endpoint:
