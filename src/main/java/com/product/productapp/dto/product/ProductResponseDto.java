@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 @Data
 @Builder
@@ -16,8 +17,5 @@ public class ProductResponseDto {
     private Double price;
     private String brand;
     private String color;
-
-    private LocalDateTime creationTimeStamp;
-    private LocalDateTime updateTimeStamp;
 
 }

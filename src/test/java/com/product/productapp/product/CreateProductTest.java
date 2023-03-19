@@ -11,11 +11,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDateTime;
+import java.time.*;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -38,6 +39,7 @@ class CreateProductTest {
 
     private Client client;
     private ProductRequestDto productRequestDto;
+
     @BeforeEach()
     void setup(){
         client = Client.builder()
@@ -53,6 +55,7 @@ class CreateProductTest {
                 .brand("testBrand")
                 .color("testColor")
                 .build();
+
     }
 
     @Test
@@ -66,7 +69,6 @@ class CreateProductTest {
                 .brand(productRequestDto.getBrand())
                 .color(productRequestDto.getColor())
                 .clientId(client.getId())
-                .createdAt(null)
                 .build();
 
         when(productRepository.save(any())).thenReturn(product);
@@ -78,7 +80,6 @@ class CreateProductTest {
                 .description(product.getDescription())
                 .color(product.getColor())
                 .price(product.getPrice())
-                .creationTimeStamp(null)
                 .clientId(product.getClientId())
                 .build();
 

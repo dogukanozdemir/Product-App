@@ -13,7 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +27,8 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     private final AuthenticationUtil authenticationUtil;
+
+    private final Clock clock = Clock.systemUTC();
 
     public ProductResponseDto createProduct(ProductRequestDto requestDto){
         Client currentClient = authenticationUtil.getCurrentClient();
@@ -80,8 +84,6 @@ public class ProductService {
                                 .brand(product.getBrand())
                                 .price(product.getPrice())
                                 .color(product.getColor())
-                                .creationTimeStamp(product.getCreatedAt())
-                                .updateTimeStamp(product.getUpdatedAt())
                                 .build()
                 ).toList();
     }
@@ -93,7 +95,6 @@ public class ProductService {
 
         BeanUtils.copyProperties(requestDto, product, "id", "createdAt");
 
-        product.setUpdatedAt(LocalDateTime.now());
         product.setName(requestDto.getName());
         product.setDescription(requestDto.getDescription());
         product.setPrice(requestDto.getPrice());
