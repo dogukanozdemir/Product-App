@@ -1,20 +1,22 @@
 # Introduction
 Welcome to the documentation for the Product Service API. This API is designed to allow clients to manage their products in an efficient and secure way. The API is implemented using Java Spring Boot, and utilizes a MySQL database for storing data. The API supports the following features:
 
-A client can create new products in the service
-A client can modify its own products but cannot modify others’ products
-A client can delete its own products but cannot modify others’ products
-A client can view all products in the service
+* A client can create new products in the service
+* A client can modify its own products but cannot modify others’ products
+* A client can delete its own products but cannot modify others’ products
+* A client can view all products in the service
 
 Before a client can use the service, they must first register or log in to the system. Once authenticated, the client will receive a JWT token that will be used to authenticate all subsequent requests.
 
-This document outlines the API endpoints, HTTP verbs, headers, responses, and tests that are used in this project.
+This document outlines the API endpoints, HTTP verbs, headers and responses. 
 
 # Authentication
 
-In order to use the API, clients must authenticate themselves with valid credentials. There are two authentication endpoints available: api/auth/register and api/auth/login.
+In order to use the API, clients must authenticate themselves with valid credentials. 
+Clients can register themselves by sending a POST request to the `/api/auth/register` endpoint with their username and password. After a successful registration, clients must then send a POST request to the `/api/auth/login` endpoint with their registered credentials to receive a JWT token, which must be included in the Authorization header of all subsequent requests. 
+This both provides that every client is authenticated to use the service also to understand which client is sending requests to the Product-Service API. 
 
-Clients can register themselves by sending a POST request to the `/api/auth/register` endpoint with their username and password. After a successful registration, clients must then send a POST request to the `/api/auth/login` endpoint with their registered credentials to receive a JWT token, which must be included in the Authorization header of all subsequent requests. If a client attempts to access a protected endpoint without a valid JWT token, they will receive a 403 Forbidden error response.
+If a client attempts to access a protected endpoint without a valid JWT token, they will receive a 401 Unautharized error response.
 
 ## Register
 To register a new client, use the following endpoint:
