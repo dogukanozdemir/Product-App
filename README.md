@@ -8,8 +8,74 @@ This project is a Java Spring Boot web service that allows clients to create, mo
 
 This document outlines the API endpoints, HTTP verbs, headers, responses, and tests that are used in this project.
 
-# API Endpoints
-The following API endpoints are supported by the service:
+# Authentication
+
+The API uses JWT (JSON Web Tokens) for authentication. Clients need to register to the system and login to the service to generate a JWT token, which will be used to authorize their requests.
+
+## Register
+To register a new client, use the following endpoint:
+
+**Endpoint: `/api/auth/register`**
+
+**HTTP Verb: `POST`**
+
+**Headers:**
+
+* **Content-Type: `application/json`**
+
+**Request body:**
+
+```json
+{
+  "username": "johndoe",
+  "password": "password123"
+}
+```
+
+**Response:**
+
+```json
+{
+  "message": "Client johndoe registered to system successfully"
+}
+
+```
+
+After successful registration, clients need to log in to the service to generate a JWT token.
+
+## Login
+
+To log in to the service and generate a JWT token, use the following endpoint:
+
+**Endpoint: `/api/auth/login`**
+
+**HTTP Verb: `POST`**
+
+**Headers:**
+
+* **Content-Type: `application/json`**
+
+**Request body:**
+
+```json
+{
+  "username": "johndoe",
+  "password": "password123"
+}
+```
+
+**Response:**
+
+```json
+{
+  "username": "johndoe",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...<jwt token>"
+}
+
+```
+
+# Service API Endpoints
+The following API endpoints are supported by the service?
 
 ### Create a new product
 
@@ -19,16 +85,18 @@ The following API endpoints are supported by the service:
 
 **Headers:**
 
-* *`Content-Type: application/json`*
-* *`Authorization: Bearer <jwt token>`*
+* *Content-Type: `application/json`*
+* *Authorization: `Bearer <jwt token>`*
 
 **Request body:**
 
 ```json
 {
-  "name": "Product Name",
-  "description": "Product Description",
-  "price": 10.99
+    "name" : "Led TV",
+    "description" : "4K TV with 3D glasses",
+    "color" : "Black",
+    "brand" : "Samsung",
+    "price" : 500
 }
 ```
 
