@@ -3,7 +3,6 @@ package com.product.productapp.service;
 import com.product.productapp.authentication.AuthenticationUtil;
 import com.product.productapp.dto.product.ProductRequestDto;
 import com.product.productapp.dto.product.ProductResponseDto;
-import com.product.productapp.dto.product.ProductDto;
 import com.product.productapp.entity.Client;
 import com.product.productapp.entity.Product;
 import com.product.productapp.repository.ProductRepository;
@@ -17,7 +16,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -46,7 +44,15 @@ public class ProductService {
                 .build();
         productRepository.save(product);
 
-        return new ProductResponseDto(product.getId(), product.getName(), product.getPrice());
+        return ProductResponseDto.builder()
+                .id(product.getId())
+                .color(product.getColor())
+                .description(product.getDescription())
+                .name(product.getName())
+                .price(product.getPrice())
+                .creationTimeStamp(product.getCreatedAt())
+                .clientId(product.getClientId())
+                .build();
     }
 
 
@@ -63,37 +69,50 @@ public class ProductService {
     }
 
 
-    public List<ProductDto> getAllProducts(){
+    public List<ProductResponseDto> getAllProducts(){
         List<Product> allProducts = new ArrayList<>();
         productRepository.findAll().forEach(allProducts::add);
         return allProducts.stream()
                 .map(
-                        product -> ProductDto.builder()
+                        product -> ProductResponseDto.builder()
                                 .id(product.getId())
+                                .clientId(product.getClientId())
                                 .name(product.getName())
                                 .description(product.getDescription())
                                 .brand(product.getBrand())
                                 .price(product.getPrice())
                                 .color(product.getColor())
+                                .creationTimeStamp(product.getCreatedAt())
+                                .updateTimeStamp(product.getUpdatedAt())
                                 .build()
                 ).toList();
     }
 
-    public ProductDto updateProductById(ProductRequestDto requestDto, Long id) {
+    public ProductResponseDto updateProductById(ProductRequestDto requestDto, Long id) {
         Client client = authenticationUtil.getCurrentClient();
         Product product = productRepository.findByIdAndAndClientId(id, client.getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("Product with id %s was not found", id)));
 
         BeanUtils.copyProperties(requestDto, product, "id", "createdAt");
+
         product.setUpdatedAt(LocalDateTime.now());
+        product.setName(requestDto.getName());
+        product.setDescription(requestDto.getDescription());
+        product.setPrice(requestDto.getPrice());
+        product.setColor(requestDto.getColor());
+        product.setBrand(requestDto.getBrand());
+
         productRepository.save(product);
 
-        return ProductDto.builder().id(product.getId())
+        return ProductResponseDto.builder()
+                .id(product.getId())
+                .clientId(product.getClientId())
                 .name(product.getName())
-                .description(product.getDescription())
                 .brand(product.getBrand())
-                .price(product.getPrice())
                 .color(product.getColor())
+                .description(product.getDescription())
+                .price(product.getPrice())
+                .updateTimeStamp(product.getUpdatedAt())
                 .build();
     }
 

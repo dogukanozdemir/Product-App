@@ -1,7 +1,7 @@
 package com.product.productapp.product;
 
 import com.product.productapp.authentication.AuthenticationUtil;
-import com.product.productapp.dto.product.ProductDto;
+import com.product.productapp.dto.product.ProductResponseDto;
 import com.product.productapp.dto.product.ProductRequestDto;
 import com.product.productapp.entity.Client;
 import com.product.productapp.entity.Product;
@@ -69,7 +69,7 @@ class UpdateProductTest {
         when(productRepository.findByIdAndAndClientId(anyLong(), anyLong())).thenReturn(Optional.of(existingProduct));
         when(productRepository.save(existingProduct)).thenReturn(existingProduct);
 
-        ProductDto expectedProduct = ProductDto.builder()
+        ProductResponseDto expectedProduct = ProductResponseDto.builder()
                 .id(existingProduct.getId())
                 .name(updatedProductRequestDto.getName())
                 .description(updatedProductRequestDto.getDescription())
@@ -78,7 +78,7 @@ class UpdateProductTest {
                 .color(updatedProductRequestDto.getColor())
                 .build();
 
-        ProductDto actualProduct = productService.updateProductById(updatedProductRequestDto, existingProduct.getId());
+        ProductResponseDto actualProduct = productService.updateProductById(updatedProductRequestDto, existingProduct.getId());
         assertThat(expectedProduct).isEqualTo(actualProduct);
     }
 

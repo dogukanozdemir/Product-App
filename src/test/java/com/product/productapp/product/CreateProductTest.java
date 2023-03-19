@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -65,6 +66,7 @@ class CreateProductTest {
                 .brand(productRequestDto.getBrand())
                 .color(productRequestDto.getColor())
                 .clientId(client.getId())
+                .createdAt(null)
                 .build();
 
         when(productRepository.save(any())).thenReturn(product);
@@ -75,6 +77,8 @@ class CreateProductTest {
                 .id(product.getId())
                 .name(product.getName())
                 .price(product.getPrice())
+                .creationTimeStamp(null)
+                .clientId(product.getClientId())
                 .build();
 
         assertThat(expectedResponseDto).isEqualTo(responseDto);

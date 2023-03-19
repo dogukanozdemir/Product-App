@@ -1,7 +1,6 @@
 package com.product.productapp.product;
 
-import com.product.productapp.authentication.AuthenticationUtil;
-import com.product.productapp.dto.product.ProductDto;
+import com.product.productapp.dto.product.ProductResponseDto;
 import com.product.productapp.entity.Product;
 import com.product.productapp.repository.ProductRepository;
 import com.product.productapp.service.ProductService;
@@ -54,8 +53,8 @@ public class GetAllProductsTest {
 
         when(productRepository.findAll()).thenReturn(productList);
 
-        List<ProductDto> expectedProducts = new ArrayList<>();
-        expectedProducts.add(ProductDto.builder()
+        List<ProductResponseDto> expectedProducts = new ArrayList<>();
+        expectedProducts.add(ProductResponseDto.builder()
                 .id(1L)
                 .name("Product 1")
                 .description("This is product 1")
@@ -63,7 +62,7 @@ public class GetAllProductsTest {
                 .price(10.00)
                 .color("Red")
                 .build());
-        expectedProducts.add(ProductDto.builder()
+        expectedProducts.add(ProductResponseDto.builder()
                 .id(2L)
                 .name("Product 2")
                 .description("This is product 2")
@@ -72,7 +71,7 @@ public class GetAllProductsTest {
                 .color("Blue")
                 .build());
 
-        List<ProductDto> actualProducts = productService.getAllProducts();
+        List<ProductResponseDto> actualProducts = productService.getAllProducts();
         assertThat(expectedProducts).hasSameSizeAs(actualProducts);
         for (int i = 0; i < expectedProducts.size(); i++) {
             assertThat(expectedProducts.get(i)).isEqualTo(actualProducts.get(i));

@@ -2,7 +2,6 @@ package com.product.productapp.controller;
 
 import com.product.productapp.dto.product.ProductRequestDto;
 import com.product.productapp.dto.product.ProductResponseDto;
-import com.product.productapp.dto.product.ProductDto;
 import com.product.productapp.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +26,7 @@ public class ProductController {
     }
 
     @GetMapping(path = "/products")
-    public ResponseEntity<List<ProductDto>> getProducts(){
+    public ResponseEntity<List<ProductResponseDto>> getProducts(){
         return ResponseEntity.ok(productService.getAllProducts());
     }
 
@@ -37,7 +36,7 @@ public class ProductController {
     }
 
     @PutMapping(path = "/product/{id}")
-    public ResponseEntity<ProductDto> updateProduct(@Validated @RequestBody ProductRequestDto productRequestDto, @PathVariable Long id){
+    public ResponseEntity<ProductResponseDto> updateProduct(@Validated @RequestBody ProductRequestDto productRequestDto, @PathVariable Long id){
         return ResponseEntity.ok(productService.updateProductById(productRequestDto,id));
     }
 
