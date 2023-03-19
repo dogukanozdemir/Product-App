@@ -76,6 +76,7 @@ class UpdateProductTest {
                 .brand(updatedProductRequestDto.getBrand())
                 .price(updatedProductRequestDto.getPrice())
                 .color(updatedProductRequestDto.getColor())
+                .clientId(client.getId())
                 .build();
 
         ProductResponseDto actualProduct = productService.updateProductById(updatedProductRequestDto, existingProduct.getId());

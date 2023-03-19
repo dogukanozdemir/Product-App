@@ -39,7 +39,6 @@ public class ProductService {
                 .price(requestDto.getPrice())
                 .brand(requestDto.getBrand())
                 .color(requestDto.getColor())
-                .createdAt(LocalDateTime.now())
                 .clientId(currentClient.getId())
                 .build();
         productRepository.save(product);
@@ -50,7 +49,6 @@ public class ProductService {
                 .description(product.getDescription())
                 .name(product.getName())
                 .price(product.getPrice())
-                .creationTimeStamp(product.getCreatedAt())
                 .clientId(product.getClientId())
                 .build();
     }
@@ -112,7 +110,6 @@ public class ProductService {
                 .color(product.getColor())
                 .description(product.getDescription())
                 .price(product.getPrice())
-                .updateTimeStamp(product.getUpdatedAt())
                 .build();
     }
 

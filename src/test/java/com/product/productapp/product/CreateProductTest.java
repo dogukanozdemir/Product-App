@@ -74,8 +74,9 @@ class CreateProductTest {
         ProductResponseDto responseDto = productService.createProduct(productRequestDto);
 
         ProductResponseDto expectedResponseDto = ProductResponseDto.builder()
-                .id(product.getId())
                 .name(product.getName())
+                .description(product.getDescription())
+                .color(product.getColor())
                 .price(product.getPrice())
                 .creationTimeStamp(null)
                 .clientId(product.getClientId())
