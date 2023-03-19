@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ClientRegisterResponseDto {
 
-    private String username;
-    private String hashedPassword;
+    private String message;
 
 }

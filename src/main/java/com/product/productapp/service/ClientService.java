@@ -39,9 +39,10 @@ public class ClientService {
         clientRepository.save(client);
 
         return ClientRegisterResponseDto.builder()
-                .username(client.getUsername())
-                .hashedPassword(client.getPassword())
-                .build();
+                .message(String.format(
+                        "Client %s registered to system successfully",
+                        requestDto.getUsername()
+                )).build();
     }
 
     public ClientLoginResponseDto loginClient(ClientLoginRequestDto requestDto) {

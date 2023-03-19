@@ -3,9 +3,9 @@ spring:
     activate:
       on-profile: prod
   datasource:
-    url: jdbc:mysql://sql7.freesqldatabase.com:3306/sql7605145
-    username: sql7605145
-    password: dMSwe2IrT5
+    url: jdbc:mysql://sql7.freesqldatabase.com:3306/sql7606947
+    username: sql7606947
+    password: yhnZzYzHu1
   jpa:
     show-sql: false
     hibernate:
