@@ -85,7 +85,7 @@ The following API endpoints are supported by the service?
 
 ## Create a new product
 
-**Endpoint: `api/service/product`**
+**Endpoint: `/api/service/product`**
 
 **HTTP Verb: `POST`**
 
@@ -122,7 +122,7 @@ The following API endpoints are supported by the service?
 
 ## Modify a product
 
-**Endpoint: `api/service/product/{id}`**
+**Endpoint: `/api/service/product/{id}`**
 
 **HTTP Verb: `PUT`**
 
@@ -158,7 +158,7 @@ The following API endpoints are supported by the service?
 ```
 
 ## Delete a product
-**Endpoint: `api/service/product/{id}`**
+**Endpoint: `/api/service/product/{id}`**
 
 **HTTP Verb: `DELETE`**
 
@@ -176,7 +176,7 @@ The following API endpoints are supported by the service?
 
 ## View all products
 
-**Endpoint: `api/service/products`**
+**Endpoint: `/api/service/products`**
 
 **HTTP Verb: `GET`**
 
